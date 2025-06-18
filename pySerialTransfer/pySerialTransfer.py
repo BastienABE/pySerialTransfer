@@ -18,6 +18,9 @@ class InvalidSerialPort(Exception):
 class InvalidCallbackList(Exception):
     pass
 
+class ConnectionError(Exception):
+    pass
+
 
 class Status(Enum):
     CONTINUE        = 3
@@ -163,8 +166,7 @@ class SerialTransfer:
                 self.connection.open()
                 return True
             except serial.SerialException as e:
-                logging.exception(e)
-                return False
+                raise ConnectionError(e)
         return True
     
     def set_callbacks(self, callbacks: Union[list[callable], tuple[callable]]):
